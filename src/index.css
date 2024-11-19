@@ -1,0 +1,131 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes ripple {
+  0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+  100% { box-shadow: 0 0 0 20px rgba(59, 130, 246, 0); }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply antialiased;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply relative bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-3 rounded-full 
+           hover:from-blue-700 hover:to-blue-800 transition-all duration-300 
+           transform hover:scale-105 shadow-lg hover:shadow-xl
+           after:content-[''] after:absolute after:inset-0 
+           after:rounded-full after:animate-[ripple_1.5s_ease-out_infinite];
+  }
+
+  .btn-secondary {
+    @apply bg-white text-blue-600 px-8 py-3 rounded-full 
+           hover:bg-gray-50 transition-all duration-300 
+           transform hover:scale-105 shadow-md hover:shadow-lg 
+           border-2 border-blue-600;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.8s ease-out forwards;
+  }
+
+  .animate-scaleIn {
+    animation: scaleIn 0.6s ease-out forwards;
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-800 
+           bg-[length:200%_auto] animate-[gradientFlow_3s_ease-in-out_infinite];
+  }
+
+  .nav-link {
+    @apply relative px-4 py-2 text-gray-700 hover:text-blue-600 transition-colors duration-300
+           after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 
+           after:h-0.5 after:bg-blue-600 after:transition-all after:duration-300
+           hover:after:w-full;
+  }
+
+  .service-card {
+    @apply bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300
+           transform hover:-translate-y-2 border border-gray-100
+           hover:border-blue-100 hover:bg-gradient-to-br hover:from-white hover:to-blue-50;
+  }
+
+  .stat-card {
+    @apply relative overflow-hidden bg-gradient-to-br from-blue-600 to-blue-700
+           p-8 rounded-xl transform transition-transform duration-300 hover:scale-105
+           before:content-[''] before:absolute before:inset-0
+           before:bg-white before:opacity-0 before:transition-opacity
+           hover:before:opacity-10;
+  }
+
+  .doctor-card {
+    @apply relative bg-white rounded-xl shadow-lg overflow-hidden
+           transform transition-all duration-300 hover:scale-105
+           hover:shadow-2xl;
+  }
+
+  .testimonial-card {
+    @apply bg-white rounded-2xl shadow-xl p-8 relative
+           transform transition-all duration-300
+           hover:shadow-2xl hover:-translate-y-1;
+  }
+}
+
+.modal-overlay {
+  @apply fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm
+         transition-opacity duration-300;
+}
+
+.modal-content {
+  @apply fixed inset-0 flex items-center justify-center p-4
+         transform transition-all duration-300;
+}
+
+.modal-body {
+  @apply bg-white rounded-2xl shadow-2xl w-full max-w-lg
+         transform transition-all duration-300
+         scale-95 opacity-0;
+}
+
+.modal-body.open {
+  @apply scale-100 opacity-100;
+}

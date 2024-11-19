@@ -172,7 +172,7 @@ export default function Hero() {
     <div
     className="relative pt-32 pb-40 px-4 sm:px-6 lg:px-8 overflow-hidden bg-cover bg-center"
     style={{
-      backgroundImage: 'url(https://png.pngtree.com/background/20230525/original/pngtree-image-of-futuristic-medical-hospital-room-picture-image_2736851.jpg)', // Add your image URL here
+      backgroundImage: 'url(https://img.freepik.com/premium-photo/caring-visions-resolute-gaze-young-male-nurse-dynamic-hospital-corridor_1000124-89692.jpg)', // Add your image URL here
     }}
   >
     <div className="absolute inset-0 bg-white bg-opacity-30"></div>
@@ -188,7 +188,7 @@ export default function Hero() {
               Your Health Is Our
               <span className="text-blue-600 block">Top Priority</span>
             </h1>
-            <p className="text-lg md:text-xl text-black leading-relaxed">
+            <p className="text-lg md:text-xl text-blue-950 leading-relaxed">
               Experience world-class healthcare with compassion. Our team of expert doctors
               and state-of-the-art facilities ensure you receive the best medical care.
             </p>

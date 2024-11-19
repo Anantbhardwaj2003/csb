@@ -395,7 +395,7 @@ function MobileNavLink({
     </a>
   );
 }*/
-import React, { useState, useEffect } from 'react';
+/*import React, { useState, useEffect } from 'react';
 import { Heart, Menu, X, Phone, Clock, MapPin } from 'lucide-react';
 
 export default function Navbar() {
@@ -526,6 +526,201 @@ function MobileNavLink({ href, children, isActive }) {
       {children}
     </a>
   );
+}*/
+import React, { useState, useRef, useEffect } from "react";
+import { Heart, Menu, X } from "lucide-react";
+
+export default function Navbar() {
+  const navItems = [
+    { label: "Home", href: "#home", dropdown: null },
+    {
+      label: "Services",
+      href: "#services",
+      dropdown: ["Cardiology", "Neurology", "Pediatrics", "Orthopedics"],
+    },
+    {
+      label: "Doctors",
+      href: "#doctors",
+      dropdown: ["Dr. Smith", "Dr. Patel", "Dr. Lee", "Dr. Martinez"],
+    },
+    {
+      label: "About",
+      href: "#about",
+      dropdown: ["Our Mission", "Our Vision", "History", "Leadership"],
+    },
+    {
+      label: "Contact",
+      href: "#contact",
+      dropdown: ["Email Us", "Call Us", "Visit Us", "Support"],
+    },
+  ];
+
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeMenu, setActiveMenu] = useState("Home");
+
+  const handleMenuClick = (label, href) => {
+    setActiveMenu(label);
+    if (label === "Home") {
+      window.location.href = href;
+    }
+  };
+
+  return (
+    <nav className="sticky top-0 w-full z-50 bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-20">
+          {/* Logo */}
+          <div className="flex items-center">
+            <Heart className="h-8 w-8 text-white animate-pulse" />
+            <span
+              className="ml-2 text-2xl font-bold tracking-tight uppercase bg-gradient-to-r from-white to-blue-300 bg-clip-text text-transparent hover:scale-110 hover:text-white-400 transition-all duration-300 relative"
+            >
+              <span className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-blue-400 via-white to-blue-400 animate-shimmer opacity-0 group-hover:opacity-100"></span>
+              CSB Hospital
+            </span>
+
+          </div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex space-x-6 items-center">
+            {navItems.map((item, index) => (
+              <NavItem
+                key={index}
+                item={item}
+                isActive={activeMenu === item.label}
+                onClick={() => handleMenuClick(item.label, item.href)}
+              />
+            ))}
+            <button className="bg-white text-blue-600 px-5 py-2 rounded-full hover:bg-blue-600 hover:text-white transition-transform duration-300 transform hover:scale-105 shadow-md">
+              Book Appointment
+            </button>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden p-2 rounded-lg transition-colors duration-300 hover:bg-gray-200"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? (
+              <X className="h-6 w-6 text-white" />
+            ) : (
+              <Menu className="h-6 w-6 text-white" />
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Navigation */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg">
+          {navItems.map((item, index) => (
+            <MobileNavItem
+              key={index}
+              item={item}
+              isActive={activeMenu === item.label}
+              onClick={() => {
+                handleMenuClick(item.label, item.href);
+                setIsMobileMenuOpen(false);
+              }}
+            />
+          ))}
+          <div className="p-4">
+            <button className="w-full bg-blue-700 text-white px-6 py-3 rounded-full hover:bg-blue-600 hover:text-white transition-transform duration-300 shadow-md">
+              Book Appointment
+            </button>
+          </div>
+        </div>
+      )}
+    </nav>
+  );
 }
+
+function NavItem({ item, isActive, onClick }) {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div
+      className="relative group"
+      onMouseEnter={() => setIsDropdownOpen(true)}
+      onMouseLeave={() => setIsDropdownOpen(false)}
+      ref={dropdownRef}
+    >
+      <a
+        href={item.href}
+        className={`px-4 py-2 rounded-lg text-lg font-medium transition-all duration-300 ${isActive
+            ? "text-white bg-blue-700"
+            : "text-white hover:bg-blue-500 hover:text-gray-100"
+          }`}
+        onClick={onClick}
+      >
+        {item.label}
+      </a>
+      {item.dropdown && isDropdownOpen && (
+        <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50">
+          <ul className="py-2">
+            {item.dropdown.map((subItem, idx) => (
+              <li key={idx}>
+                <a
+                  href={`${item.href}/${subItem.toLowerCase().replace(/\s+/g, '-')}`}
+                  className="block px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-100 transition-colors duration-200"
+                >
+                  {subItem}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function MobileNavItem({ item, isActive, onClick }) {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  return (
+    <div className="border-b border-gray-200">
+      <button
+        className={`w-full flex justify-between items-center px-4 py-3 text-lg font-medium ${isActive ? "text-white bg-blue-500" : "text-gray-200"
+          } hover:bg-blue-700 hover:text-white`}
+        onClick={() => {
+          onClick();
+          setIsDropdownOpen(!isDropdownOpen);
+        }}
+      >
+        {item.label}
+        {item.dropdown && (
+          <span>{isDropdownOpen ? "▲" : "▼"}</span>
+        )}
+      </button>
+      {item.dropdown && isDropdownOpen && (
+        <ul className="bg-gradient-to-r from-blue-600 to-purple-600">
+          {item.dropdown.map((subItem, idx) => (
+            <li key={idx}>
+              <a
+                href={`${item.href}/${subItem.toLowerCase().replace(/\s+/g, '-')}`}
+                className="block px-6 py-2 text-white hover:bg-blue-500 transition-colors"
+              >
+                {subItem}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 
 

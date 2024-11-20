@@ -172,7 +172,7 @@ export default function Hero() {
     <div
     className="relative pt-32 pb-40 px-4 sm:px-6 lg:px-8 overflow-hidden bg-cover bg-center"
     style={{
-      backgroundImage: 'url(https://img.freepik.com/premium-photo/caring-visions-resolute-gaze-young-male-nurse-dynamic-hospital-corridor_1000124-89692.jpg)', // Add your image URL here
+      backgroundImage: 'url(https://www.bridgemi.com/sites/default/files/styles/full_width_image/public/hero_images/hospital.jpg?itok=s9wdM5uk)', // Add your image URL here
     }}
   >
     <div className="absolute inset-0 bg-white bg-opacity-30"></div>
@@ -186,7 +186,7 @@ export default function Hero() {
           <div className="space-y-8 animate-fadeIn">
             <h1 className="text-4xl md:text-5xl font-bold leading-tight text-gray-900">
               Your Health Is Our
-              <span className="text-blue-600 block">Top Priority</span>
+              <span className="text-blue-900 block">Top Priority</span>
             </h1>
             <p className="text-lg md:text-xl text-blue-950 leading-relaxed">
               Experience world-class healthcare with compassion. Our team of expert doctors
@@ -201,7 +201,7 @@ export default function Hero() {
                 Learn More
               </button>
             </div>
-            <div className="grid grid-cols-3 gap-8 mt-8 text-gray-950" >
+            <div className="grid grid-cols-3 gap-8 mt-8 text--950" >
               <Stat icon={Activity} label="Successful Operations" value="15,000+"/>
               <Stat icon={Shield} label="Years Experience" value="25+" />
               <Stat icon={Calendar} label="Daily Patients" value="500+" />

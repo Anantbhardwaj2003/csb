@@ -1,39 +1,47 @@
-/*import { useState, useEffect } from 'react';
-import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { Star, ChevronLeft, ChevronRight, Quote } from "lucide-react";
 
 export default function Testimonials() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
 
   const testimonials = [
     {
-      name: 'Emma Thompson',
-      role: 'Patient',
-      image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=200',
-      content: 'The care I received at CSB Hospital was exceptional. The staff went above and beyond to ensure my comfort.',
+      name: "Emma Thompson",
+      role: "Patient",
+      image:
+        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=200",
+      content:
+        "The care I received at CSB Hospital was exceptional. The staff went above and beyond to ensure my comfort.",
       rating: 5,
     },
     {
-      name: 'David Chen',
-      role: 'Patient',
-      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200',
-      content: 'State-of-the-art facilities and compassionate care. I couldn\'t have asked for better treatment.',
+      name: "David Chen",
+      role: "Patient",
+      image:
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200",
+      content:
+        "State-of-the-art facilities and compassionate care. I couldn't have asked for better treatment.",
       rating: 5,
     },
     {
-      name: 'Sarah Williams',
-      role: 'Patient',
-      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200',
-      content: 'The doctors here are not only highly skilled but also take time to explain everything thoroughly.',
+      name: "Sarah Williams",
+      role: "Patient",
+      image:
+        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200",
+      content:
+        "The doctors here are not only highly skilled but also take time to explain everything thoroughly.",
       rating: 5,
     },
   ];
 
   useEffect(() => {
+    if (isHovered) return; // Pause the carousel when hovered
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % testimonials.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, []);
+  }, [isHovered]);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % testimonials.length);
@@ -44,17 +52,25 @@ export default function Testimonials() {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-br from-blue-50 to-white">
+    <section
+      className="py-20 bg-gradient-to-br from-blue-50 to-white"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Patient Testimonials</h2>
-          <p className="text-xl text-gray-600">Hear what our patients say about their experience</p>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            What Our Patients Say
+          </h2>
+          <p className="text-xl text-gray-600">
+            Real experiences from people we’ve cared for
+          </p>
         </div>
 
         <div className="relative">
           <div className="overflow-hidden">
             <div
-              className="flex transition-transform duration-500 ease-in-out"
+              className="flex transition-transform duration-700 ease-in-out"
               style={{ transform: `translateX(-${currentSlide * 100}%)` }}
             >
               {testimonials.map((testimonial, index) => (
@@ -66,15 +82,26 @@ export default function Testimonials() {
                         <img
                           src={testimonial.image}
                           alt={testimonial.name}
-                          className="w-20 h-20 rounded-full mx-auto mb-6 object-cover"
+                          className="w-20 h-20 rounded-full mx-auto mb-6 object-cover border-2 border-blue-500"
                         />
                         <div className="flex justify-center mb-4">
-                          {[...Array(testimonial.rating)].map((_, i) => (
-                            <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                          {[...Array(5)].map((_, i) => (
+                            <Star
+                              key={i}
+                              className={`w-5 h-5 ${
+                                i < testimonial.rating
+                                  ? "text-yellow-400"
+                                  : "text-gray-300"
+                              }`}
+                            />
                           ))}
                         </div>
-                        <p className="text-xl text-gray-600 italic mb-6">{testimonial.content}</p>
-                        <h4 className="text-lg font-semibold text-gray-900">{testimonial.name}</h4>
+                        <p className="text-xl text-gray-600 italic mb-6">
+                          "{testimonial.content}"
+                        </p>
+                        <h4 className="text-lg font-semibold text-gray-900">
+                          {testimonial.name}
+                        </h4>
                         <p className="text-blue-600">{testimonial.role}</p>
                       </div>
                     </div>
@@ -97,13 +124,14 @@ export default function Testimonials() {
             <ChevronRight className="w-6 h-6 text-gray-600" />
           </button>
 
-          <div className="flex justify-center mt-8 space-x-2">
+          <div className="flex justify-center mt-8 space-x-3">
             {testimonials.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentSlide(index)}
-                className={`w-3 h-3 rounded-full transition-colors ${
-                  currentSlide === index ? 'bg-blue-600' : 'bg-gray-300'
+                aria-label={`Go to slide ${index + 1}`}
+                className={`w-4 h-4 rounded-full transition-colors ${
+                  currentSlide === index ? "bg-blue-600" : "bg-gray-300"
                 }`}
               />
             ))}
@@ -112,7 +140,8 @@ export default function Testimonials() {
       </div>
     </section>
   );
-}*/
+}
+
 /*import { useState, useEffect } from 'react';
 
 import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
@@ -401,7 +430,7 @@ export default function Testimonials() {
     </section>
   );
 }*/
-import { useState, useEffect } from 'react';
+/*import { useState, useEffect } from 'react';
 import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -550,5 +579,5 @@ export default function Testimonials() {
       </div>
     </section>
   );
-}
+}*/
 

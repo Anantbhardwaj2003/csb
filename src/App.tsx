@@ -72,7 +72,6 @@ import Doctors from './components/Doctors';
 import Testimonials from './components/Testimonials';
 import Footer from './components/Footer';
 import EmergencyBanner from './components/EmergencyBanner';
-import AppointmentModal from './components/AppointmentModal';
 import HealthResources from './components/HealthResources';
 import FeaturedTreatments from './components/FeaturedTreatments';
 import Specialties from './components/Specialties';
@@ -95,10 +94,6 @@ function App() {
       <Doctors />
       <Testimonials />
       <Footer />
-      <AppointmentModal
-        isOpen={isAppointmentModalOpen}
-        onClose={() => setIsAppointmentModalOpen(false)}
-      />
     </div>
   );
 }

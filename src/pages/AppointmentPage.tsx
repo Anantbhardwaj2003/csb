@@ -213,7 +213,7 @@ import { X, Calendar, Clock, User, Phone, Mail, MessageSquare } from 'lucide-rea
 import { useState, useEffect } from 'react';
 import { X, Calendar, Clock, User, Phone, Mail, MessageSquare } from 'lucide-react';
 
-export default function AppointmentModal({ isOpen, onClose }) {
+export default function AppointmentPage({ isOpen, onClose }) {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     name: '',

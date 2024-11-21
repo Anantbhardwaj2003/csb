@@ -527,12 +527,12 @@ function MobileNavLink({ href, children, isActive }) {
     </a>
   );
 }*/
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Heart, Menu, X } from "lucide-react";
 
-export default function Navbar() {
+export default function Navbar({ onBookAppointment }) {
   const navItems = [
-    { label: "Home", href: "#home", dropdown: null },
+    { label: "Home", href: "#home" },
     {
       label: "Services",
       href: "#services",
@@ -557,28 +557,28 @@ export default function Navbar() {
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState("Home");
-  const navbarRef = useRef(null);
 
+  // Handle scroll-based active menu highlight
   useEffect(() => {
     const handleScroll = () => {
-      const sections = navItems.map(item => document.querySelector(item.href));
+      const sections = navItems.map((item) => document.querySelector(item.href));
       const activeSection = sections.find(
-        section => section && section.getBoundingClientRect().top < 200
+        (section) => section && section.getBoundingClientRect().top < 200
       );
       if (activeSection) {
-        const activeLabel = navItems.find(item => item.href === `#${activeSection.id}`)?.label;
+        const activeLabel = navItems.find(
+          (item) => item.href === `#${activeSection.id}`
+        )?.label;
         setActiveMenu(activeLabel || "Home");
       }
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [navItems]);
 
   return (
-    <nav
-      ref={navbarRef}
-      className="sticky top-0 z-50 bg-gradient-to-r from-gray-900 to-gray-600 text-white shadow-md transition-all duration-300"
-    >
+    <nav className="sticky top-0 z-50 bg-gradient-to-r from-gray-900 to-gray-600 text-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
@@ -599,7 +599,10 @@ export default function Navbar() {
                 onClick={() => setActiveMenu(item.label)}
               />
             ))}
-            <button className="bg-white text-gray-900 px-5 py-2 rounded-full hover:bg-gray-500 hover:text-white transition-transform duration-300 transform hover:scale-105 shadow-md">
+            <button
+              className="bg-white text-gray-900 px-5 py-2 rounded-full hover:bg-gray-500 hover:text-white transition-transform duration-300 transform hover:scale-105 shadow-md"
+              onClick={onBookAppointment}
+            >
               Book Appointment
             </button>
           </div>
@@ -608,8 +611,13 @@ export default function Navbar() {
           <button
             className="md:hidden p-2 rounded-lg transition-colors duration-300 hover:bg-gray-200"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle mobile menu"
           >
-            {isMobileMenuOpen ? <X className="h-6 w-6 text-white" /> : <Menu className="h-6 w-6 text-white" />}
+            {isMobileMenuOpen ? (
+              <X className="h-6 w-6 text-white" />
+            ) : (
+              <Menu className="h-6 w-6 text-white" />
+            )}
           </button>
         </div>
       </div>
@@ -629,7 +637,10 @@ export default function Navbar() {
             />
           ))}
           <div className="p-4">
-            <button className="w-full bg-blue-700 text-white px-6 py-3 rounded-full hover:bg-blue-600 hover:text-white transition-transform duration-300 shadow-md">
+            <button
+              className="w-full bg-blue-700 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition-transform duration-300 shadow-md"
+              onClick={onBookAppointment}
+            >
               Book Appointment
             </button>
           </div>
@@ -640,40 +651,24 @@ export default function Navbar() {
 }
 
 function NavItem({ item, isActive, onClick }) {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
-
-  useEffect(() => {
-    const handleClickOutside = event => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
   return (
-    <div
-      className="relative group"
-      onMouseEnter={() => setIsDropdownOpen(true)}
-      onMouseLeave={() => setIsDropdownOpen(false)}
-      ref={dropdownRef}
-    >
+    <div className="relative group">
       <a
         href={item.href}
-        className={`px-4 py-2 rounded-lg text-lg font-medium transition-all duration-300 ${isActive ? "text-white bg-blue-700" : "text-white hover:bg-blue-500"}`}
+        className={`px-4 py-2 rounded-lg text-lg font-medium transition-all duration-300 ${
+          isActive ? "text-white bg-blue-700" : "text-white hover:bg-blue-500"
+        }`}
         onClick={onClick}
       >
         {item.label}
       </a>
-      {item.dropdown && isDropdownOpen && (
-        <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50 fade-in">
+      {item.dropdown && (
+        <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50 fade-in group-hover:block hidden">
           <ul className="py-2">
             {item.dropdown.map((subItem, idx) => (
               <li key={idx}>
                 <a
-                  href={`${item.href}/${subItem.toLowerCase().replace(/\s+/g, '-')}`}
+                  href={`${item.href}/${subItem.toLowerCase().replace(/\s+/g, "-")}`}
                   className="block px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-100"
                 >
                   {subItem}
@@ -693,7 +688,9 @@ function MobileNavItem({ item, isActive, onClick }) {
   return (
     <div className="border-b border-gray-200">
       <button
-        className={`w-full flex justify-between items-center px-4 py-3 text-lg font-medium ${isActive ? "text-white bg-blue-500" : "text-gray-200"} hover:bg-blue-700`}
+        className={`w-full flex justify-between items-center px-4 py-3 text-lg font-medium ${
+          isActive ? "text-white bg-blue-500" : "text-gray-200"
+        } hover:bg-blue-700`}
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       >
         {item.label}
@@ -704,7 +701,7 @@ function MobileNavItem({ item, isActive, onClick }) {
           {item.dropdown.map((subItem, idx) => (
             <li key={idx}>
               <a
-                href={`${item.href}/${subItem.toLowerCase().replace(/\s+/g, '-')}`}
+                href={`${item.href}/${subItem.toLowerCase().replace(/\s+/g, "-")}`}
                 className="block px-6 py-2 text-white hover:bg-gray-900"
               >
                 {subItem}
@@ -715,8 +712,8 @@ function MobileNavItem({ item, isActive, onClick }) {
       )}
     </div>
   );
-  
 }
+
 
 
 
